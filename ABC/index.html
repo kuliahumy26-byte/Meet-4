@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Symphony of Gratitude | Heartfelt Appreciation</title>
+  <meta name="description" content="An interactive, heartfelt digital gratitude experience. Send personalized appreciation letters, light up gratitude stars, and share love with ambient slowed music.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Reenie+Beanie&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Canvas for Cosmic Stars & Golden Glow -->
+  <canvas id="ambientCanvas"></canvas>
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Top Floating Navigation / Audio & Theme Controls -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <span class="heart-pulse">✦</span>
+      <span>Grace & Gratitude</span>
+    </div>
+    
+    <div class="nav-actions">
+      <!-- Language Toggle (EN / ID) -->
+      <button id="langToggleBtn" class="pill-btn" aria-label="Change Language">
+        <span class="lang-icon">🌐</span>
+        <span id="currentLangLabel">ID / EN</span>
+      </button>
+
+      <!-- Music Toggle: Love Me Not (Slowed + Reverb) -->
+      <button id="soundToggleBtn" class="pill-btn music-pill" aria-label="Toggle Love Me Not Music">
+        <span id="soundIcon">🎵</span>
+        <span id="soundLabel">Love Me Not (Slowed)</span>
+        <span class="sound-wave">
+          <span></span><span></span><span></span>
+        </span>
+      </button>
+
+      <!-- Sparkle Burst Button -->
+      <button id="celebrateBtn" class="pill-btn primary-pill" aria-label="Celebrate Gratitude">
+        <span>✨ Celebrate</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="badge-tag">
+        <span class="badge-dot"></span>
+        <span data-i18n="heroBadge">Heartfelt Appreciation</span>
+      </div>
+      
+      <h1 class="hero-title" data-i18n="heroTitle">
+        Sometimes "Thank You" <br><span class="gradient-text">Means The Entire World</span>
+      </h1>
+      
+      <p class="hero-subtitle" data-i18n="heroSubtitle">
+        A heartfelt gesture to express genuine appreciation, warm memories, and sincere gratitude for the people who make life truly remarkable.
+      </p>
+
+      <!-- Floating quick action prompts -->
+      <div class="hero-ctas">
+        <a href="#letterSection" class="btn-primary" id="openLetterCta">
+          <span data-i18n="openLetterBtn">Open The Letter</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 13l5 5 5-5M12 4v14"/>
+          </svg>
+        </a>
+        <a href="#jarSection" class="btn-secondary" id="jarCta">
+          <span data-i18n="starlightJarBtn">Gratitude Starlight Jar</span>
+          <span>🏺</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Interactive Envelope & Letter Experience -->
+    <section class="letter-experience-section" id="letterSection">
+      
+      <!-- Customizer Bar -->
+      <div class="customizer-card glass-panel">
+        <div class="customizer-header">
+          <div class="customizer-title-wrap">
+            <span class="customizer-icon">✍️</span>
+            <div>
+              <h3 data-i18n="customizerHeading">Personalize This Gratitude</h3>
+              <p data-i18n="customizerDesc">Tailor the recipient and emotion to make it uniquely special.</p>
+            </div>
+          </div>
+          
+          <button id="surpriseMeBtn" class="btn-subtle" title="Load inspiring message">
+            <span>🎲</span> <span data-i18n="surpriseBtn">Surprise Inspiration</span>
+          </button>
+        </div>
+
+        <div class="customizer-controls">
+          <div class="input-group">
+            <label for="recipientInput" data-i18n="labelTo">To (Recipient):</label>
+            <div class="input-wrapper">
+              <input type="text" id="recipientInput" value="Ibu & Bapak" placeholder="e.g. My Best Friend, Mom, Teacher..." maxlength="40">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="relationshipSelect" data-i18n="labelRelationship">Appreciation For:</label>
+            <div class="input-wrapper">
+              <select id="relationshipSelect">
+                <option value="family" selected data-i18n="optFamily">Parents / Family (Keluarga)</option>
+                <option value="friend" data-i18n="optFriend">Best Friend (Sahabat)</option>
+                <option value="mentor" data-i18n="optMentor">Teacher / Mentor (Guru / Dosen)</option>
+                <option value="partner" data-i18n="optPartner">Partner / Loved One (Pasangan)</option>
+                <option value="colleague" data-i18n="optColleague">Teammate / Colleague (Rekan Tim)</option>
+                <option value="self" data-i18n="optSelf">Myself (Untuk Diri Sendiri)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="senderInput" data-i18n="labelFrom">From (Your Name):</label>
+            <div class="input-wrapper">
+              <input type="text" id="senderInput" value="Dengan Sepenuh Hati" placeholder="Your name or 'From a Grateful Heart'" maxlength="35">
+            </div>
+          </div>
+        </div>
+
+        <!-- Emotion tags -->
+        <div class="emotion-tags-container">
+          <span class="tags-label" data-i18n="vibeLabel">Vibe:</span>
+          <div class="emotion-chips" id="emotionChips">
+            <button class="chip active" data-vibe="warm">❤️ <span data-i18n="vibeWarm">Warm & Loving</span></button>
+            <button class="chip" data-vibe="deep">🌌 <span data-i18n="vibeDeep">Deep Gratitude</span></button>
+            <button class="chip" data-vibe="joyful">☀️ <span data-i18n="vibeJoyful">Joy & Sunshine</span></button>
+            <button class="chip" data-vibe="inspired">🌟 <span data-i18n="vibeInspiring">Proud & Inspired</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- The 3D Interactive Envelope Container -->
+      <div class="envelope-stage" id="envelopeStage">
+        <div class="stage-hint" id="stageHint" data-i18n="envelopeHint">
+          👇 Click the golden seal to unseal and read the heartfelt letter
+        </div>
+
+        <div class="envelope-wrapper" id="envelopeWrapper">
+          <!-- The Envelope Back -->
+          <div class="envelope">
+            <!-- Envelope Flap (Top Triangular Flap with 3D shadow) -->
+            <div class="envelope-flap" id="envelopeFlap">
+              <div class="flap-crease"></div>
+            </div>
+            
+            <!-- Envelope Left, Right, Bottom Decorative Folds -->
+            <div class="envelope-pocket">
+              <div class="pocket-left"></div>
+              <div class="pocket-right"></div>
+              <div class="pocket-bottom"></div>
+            </div>
+            
+            <!-- The Wax Seal Button -->
+            <button class="wax-seal" id="waxSealBtn" aria-label="Open Letter">
+              <div class="seal-inner">
+                <span class="seal-emboss">✦</span>
+              </div>
+              <span class="seal-glow"></span>
+            </button>
+            
+            <!-- The Letter Inside (Animated in layers) -->
+            <article class="letter" id="theLetter">
+              <div class="letter-texture"></div>
+              
+              <!-- Letter Header -->
+              <div class="letter-header">
+                <div class="letter-stamp">
+                  <span class="stamp-icon">🕊️</span>
+                  <span class="stamp-date" id="letterDate">OCT 2026</span>
+                </div>
+                <div class="letter-greeting">
+                  <span class="greeting-prefix" data-i18n="dearPrefix">Untuk Yang Tersayang,</span>
+                  <h2 class="recipient-display" id="recipientDisplay">Ibu & Bapak</h2>
+                </div>
+              </div>
+
+              <div class="letter-divider">
+                <span>❦</span>
+              </div>
+
+              <!-- Letter Body Content -->
+              <div class="letter-body">
+                <p id="letterParagraph1" class="lead-text">
+                  Tidak ada kata yang cukup megah untuk merangkum rasa terima kasihku atas setiap peluh, doa yang terucap di keheningan malam, dan ketulusan yang tiada henti engkau berikan.
+                </p>
+                <p id="letterParagraph2">
+                  Terima kasih telah menjadi pelabuhan paling tenang di tengah badai, tempat aku selalu bisa pulang tanpa takut dihakimi. Kehangatan, bimbingan, dan pengorbananmu adalah lentera yang menuntun setiap langkah perjalananku.
+                </p>
+                <p id="letterParagraph3" class="highlight-quote">
+                  "Kebaikanmu bukan sekadar ingatan, melainkan akar kuat yang membuatku mampu berdiri tegak hari ini."
+                </p>
+                <p id="letterParagraph4">
+                  Semoga kesehatan, kedamaian, dan kebahagiaan tak berujung senantiasa melingkupi setiap detik hidupmu. Terima kasih telah hadir dan mewarnai duniaku.
+                </p>
+              </div>
+
+              <!-- Letter Footer / Signature -->
+              <div class="letter-footer">
+                <div class="post-script" data-i18n="psNote">
+                  P.S. Terima kasih untuk hal-hal kecil yang sering luput kusyukuri.
+                </div>
+                <div class="signature-box">
+                  <span class="sig-closing" data-i18n="closingPrefix">Dengan rasa terima kasih terdalam,</span>
+                  <p class="sig-name" id="senderDisplay">Dengan Sepenuh Hati</p>
+                </div>
+              </div>
+
+              <!-- Action buttons directly on letter -->
+              <div class="letter-actions">
+                <button class="letter-btn" id="copyLetterBtn">
+                  <span>📋</span> <span data-i18n="copyText">Salin Pesan</span>
+                </button>
+                <button class="letter-btn" id="editCustomMsgBtn">
+                  <span>✏️</span> <span data-i18n="editMsg">Tulis Sendiri</span>
+                </button>
+                <button class="letter-btn primary" id="foldLetterBtn">
+                  <span>✉️</span> <span data-i18n="foldLetter">Tutup Surat</span>
+                </button>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Modal for custom editing of letter -->
+    <div class="modal-overlay" id="editModal" aria-hidden="true">
+      <div class="modal-card glass-panel">
+        <div class="modal-header">
+          <h3 data-i18n="modalTitle">Tulis Pesan Gratitude Sendiri</h3>
+          <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <label for="customMessageTextarea" data-i18n="customMsgLabel">Ungkapkan rasa terima kasihmu dengan kata-katamu sendiri:</label>
+          <textarea id="customMessageTextarea" rows="6" placeholder="Ketik kata-kata penuh makna di sini..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancelModalBtn" data-i18n="cancelBtn">Batal</button>
+          <button class="btn-primary" id="saveCustomMsgBtn" data-i18n="saveBtn">Terapkan ke Surat ✨</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillars of Gratitude: 4 Interactive 3D Flip Cards -->
+    <section class="pillars-section">
+      <div class="section-title-wrap">
+        <span class="sub-badge" data-i18n="pillarsBadge">Refleksi Syukur</span>
+        <h2 class="section-title" data-i18n="pillarsTitle">Alasan Mengapa Kita Patut Bersyukur</h2>
+        <p class="section-desc" data-i18n="pillarsDesc">Sentuh atau arahkan kursor ke kartu untuk melihat pesan di baliknya.</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front glass-panel">
+              <div class="card-icon-halo">🌱</div>
+              <h3 data-i18n="card1FrontTitle">Kebaikan Sederhana</h3>
+              <p data-i18n="card1FrontDesc">Senyuman hangat, sapaan pagi, dan secangkir teh di hari yang melelahkan.</p>
+              <span class="flip-prompt" data-i18n="flipPrompt">Ketuk untuk membalik ↻</span>
+            </div>
+            <div class="flip-card-back glass-panel">
+              <span class="back-accent">✦</span>
+              <p data-i18n="card1BackText">
+                "Terkadang kebaikan terkecil yang kita terima dari seseorang mampu menyelamatkan seluruh hari kita tanpa pernah kita sadari."
+              </p>
+              <div class="card-meta">#HalKecilBerarti</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front glass-panel">
+              <div class="card-icon-halo">🛡️</div>
+              <h3 data-i18n="card2FrontTitle">Dukungan Tanpa Suara</h3>
+              <p data-i18n="card2FrontDesc">Mereka yang tetap tinggal dan percaya saat kita meragukan diri sendiri.</p>
+              <span class="flip-prompt" data-i18n="flipPrompt">Ketuk untuk membalik ↻</span>
+            </div>
+            <div class="flip-card-back glass-panel">
+              <span class="back-accent">✦</span>
+              <p data-i18n="card2BackText">
+                "Terima kasih untuk kehadiranmu yang tulus. Kamu tak perlu selalu punya solusi, mendengar saja sudah menjadi anugerah luar biasa."
+              </p>
+              <div class="card-meta">#HadirUntukku</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front glass-panel">
+              <div class="card-icon-halo">🕯️</div>
+              <h3 data-i18n="card3FrontTitle">Pelajaran Berharga</h3>
+              <p data-i18n="card3FrontDesc">Guru, mentor, dan kegagalan yang membentuk ketangguhan jiwa kita.</p>
+              <span class="flip-prompt" data-i18n="flipPrompt">Ketuk untuk membalik ↻</span>
+            </div>
+            <div class="flip-card-back glass-panel">
+              <span class="back-accent">✦</span>
+              <p data-i18n="card3BackText">
+                "Setiap tetes kesabaran yang kau curahkan untuk membimbingku adalah investasi berharga bagi masa depanku. Terima kasih tak terhingga."
+              </p>
+              <div class="card-meta">#PelitaHidup</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front glass-panel">
+              <div class="card-icon-halo">🌈</div>
+              <h3 data-i18n="card4FrontTitle">Tawa & Memori Indah</h3>
+              <p data-i18n="card4FrontDesc">Momen-momen konyol yang selalu membuat kita tersenyum ketika mengingatnya.</p>
+              <span class="flip-prompt" data-i18n="flipPrompt">Ketuk untuk membalik ↻</span>
+            </div>
+            <div class="flip-card-back glass-panel">
+              <span class="back-accent">✦</span>
+              <p data-i18n="card4BackText">
+                "Bersamamu, hari yang biasa berubah jadi istimewa. Terima kasih telah menciptakan tawa di sela-sela rutinitas dunia."
+              </p>
+              <div class="card-meta">#MemoriAbadi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Starlight Gratitude Jar (Interactive Memory Jar) -->
+    <section class="jar-section" id="jarSection">
+      <div class="jar-layout">
+        
+        <div class="jar-info">
+          <span class="sub-badge" data-i18n="jarBadge">Guci Bintang Syukur</span>
+          <h2 class="section-title" data-i18n="jarTitle">Lepaskan Secercah Bintang Terima Kasih</h2>
+          <p class="section-desc" data-i18n="jarDesc">
+            Tuliskan satu hal sederhana yang paling kamu syukuri hari ini. Bintang gratitude milikmu akan melayang indah dan tersimpan abadi di dalam toples kaca ini.
+          </p>
+
+          <!-- Input to add note into jar -->
+          <div class="jar-input-box glass-panel">
+            <div class="jar-input-row">
+              <input type="text" id="jarNoteInput" placeholder="Misal: Terima kasih telah menemani lembur malam ini..." maxlength="120">
+              <select id="jarTagSelect">
+                <option value="❤️ Cinta">❤️ Cinta</option>
+                <option value="🌟 Cahaya" selected>🌟 Cahaya</option>
+                <option value="☕ Kebaikan">☕ Kebaikan</option>
+                <option value="🌸 Senyuman">🌸 Senyuman</option>
+                <option value="🤝 Sahabat">🤝 Sahabat</option>
+              </select>
+            </div>
+            <button id="addJarNoteBtn" class="btn-primary full-width">
+              <span data-i18n="dropStarBtn">Jatuhkan Bintang ke Dalam Toples 🌟</span>
+            </button>
+          </div>
+
+          <div class="jar-stats">
+            <div class="stat-item">
+              <span class="stat-number" id="jarCount">5</span>
+              <span class="stat-label" data-i18n="starsCountLabel">Bintang Bersinar</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">100%</span>
+              <span class="stat-label" data-i18n="sincerityLabel">Ketulusan Hati</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- The Visual Glass Jar -->
+        <div class="jar-visual-container">
+          <div class="glass-jar">
+            <div class="jar-lid"></div>
+            <div class="jar-neck"></div>
+            <div class="jar-body" id="jarBody">
+              <div class="jar-glow-core"></div>
+              <!-- Floating gratitude stars will be dynamically inserted here -->
+            </div>
+            <div class="jar-base"></div>
+          </div>
+
+          <!-- Quick click list of notes inside the jar -->
+          <div class="jar-active-note-popover" id="notePopover">
+            <span class="popover-close" id="closePopover">&times;</span>
+            <div class="popover-tag" id="popoverTag">🌟 Cahaya</div>
+            <p class="popover-text" id="popoverText">Terima kasih atas bantuan dan senyuman tulusmu hari ini!</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Daily Gratitude Quote Generator / Prompt of the Day -->
+    <section class="quote-section glass-panel">
+      <div class="quote-content">
+        <span class="quote-mark">“</span>
+        <blockquote id="dailyQuoteText">
+          Rasa syukur mengubah apa yang kita miliki menjadi terasa cukup, dan lebih. Ia mengubah penyangkalan menjadi penerimaan, kekacauan menjadi keteraturan, dan kebingungan menjadi kejelasan.
+        </blockquote>
+        <cite id="dailyQuoteAuthor">— Melody Beattie</cite>
+      </div>
+      <button class="btn-subtle" id="nextQuoteBtn">
+        <span>🔄</span> <span data-i18n="nextQuote">Kutipan Inspirasi Lain</span>
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Floating Aesthetic Music Player (Love Me Not - Slowed + Reverb) -->
+  <aside class="music-dock-container" id="musicDockContainer">
+    <div class="music-dock glass-panel" id="musicDock">
+      <div class="vinyl-disc" id="vinylDisc">
+        <div class="vinyl-groove"></div>
+        <div class="vinyl-label">
+          <span>✦</span>
+        </div>
+      </div>
+
+      <div class="dock-info">
+        <div class="dock-title-row">
+          <span class="dock-song-title">Love Me Not</span>
+          <span class="dock-tag">Slowed + Reverb</span>
+        </div>
+        <span class="dock-artist">Ravyn Lenae (Dusk Resonance Edit)</span>
+      </div>
+
+      <div class="dock-actions">
+        <button class="dock-play-btn" id="dockPlayBtn" aria-label="Play or Pause Love Me Not">
+          <span id="dockPlayIcon">▶</span>
+        </button>
+        <div class="dock-soundwave" id="dockSoundwave">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <!-- Optional upload button if user wants to play a local MP3 file -->
+        <label class="dock-upload-btn" title="Ganti atau putar file audio Anda sendiri">
+          <span>🎵</span>
+          <input type="file" id="localFileInput" accept="audio/*" style="display:none;">
+        </label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Hidden audio elements and YouTube player engine -->
+  <audio id="localAudio" src="love_me_not.mp3" preload="auto" loop></audio>
+  <div id="ytPlayerContainer" style="position:fixed;bottom:-500px;left:-500px;width:10px;height:10px;opacity:0;pointer-events:none;visibility:hidden;"></div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-heart">
+        Dibuat dengan rasa syukur mendalam untuk setiap insan berharga di dunia ini.
+      </div>
+      <p class="footer-copy">
+        ✦ Grace & Gratitude Project &bull; Didedikasikan untuk cinta, ketulusan, dan kebersamaan ✦
+      </p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast" id="toastNotice">Pesan berhasil disalin!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
